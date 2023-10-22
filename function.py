@@ -1,6 +1,4 @@
 import random
-import main
-
 def gerar_matriz_randomica():
     matriz = []
     for i in range(4):
@@ -51,16 +49,34 @@ def show(matriz):
             else:
                 print(matriz[i][j])
 
-matriz_proposta = [[0, 1, 1, 1, 1],
-                   [1, 0, 1, 1, 0],
-                   [0, 1, 0, 1, 0],
-                   [0, 0, 1, 0, 1],
-                   [0, 0, 0, 1, 0]]
+def pathCalc(matriz, b, e):
+    oneWay = []
+    twoWay =[]
+    threeWay = []
+    fourWay = []
+    for i in range(len(matriz[b])):
+        if matriz[b][i] == 1:
+            if i == e:
+                oneWay.append([b+1,e+1])
+            elif matriz[i][e] == 1:
+                twoWay.append([b+1, i+1, e+1])
+            for j in range(len(matriz[i])):
+                if matriz[i][j] == 1:
+                    if matriz[j][e] == 1 and b != j and i != e and j != e:
+                        threeWay.append([b+1, i+1, j+1, e+1])
+                    for k in range(len(matriz[j])):
+                        if matriz[j][k] == 1 and matriz[k][e] == 1:
+                            find = False
+                            path = [b, i, j, k, e]
+                            trash = []
+                            for z in path:
+                                if z not in trash:
+                                    trash.append(z)
+                                else:
+                                    find = True
+                                    break
+                            if find == False:
+                                fourWay.append([b+1, i+1, j+1, k+1, e+1])
+    return [oneWay, twoWay, threeWay, fourWay]
 
-#print(show(mult_matriz(matriz_proposta)))
-teste = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-t = [[1, 2], [3, 4]]
-for i in range(2):
-    t = mult_matriz(t)
-    show(t)
-#show(mult_matriz(t))
+#b != j and i != e and j != e and j != b and k != e and k != b
