@@ -1,9 +1,16 @@
 import random
+
+matriz_proposta = [[0, 1, 1, 1, 1],
+                   [1, 0, 1, 1, 0],
+                   [0, 1, 0, 1, 0],
+                   [0, 0, 1, 0, 1],
+                   [0, 0, 0, 1, 0]]
+
 def gerar_matriz_randomica():
     matriz = []
-    for i in range(4):
+    for i in range(5):
         vetor = []
-        for j in range(4):
+        for j in range(5):
             if i == j:
                 vetor.append(0)
             else:
@@ -14,18 +21,23 @@ def gerar_matriz_randomica():
 
 def gerar_matriz_escrita():
     matriz = []
-    for i in range(4):
+    for i in range(5):
         vetor = []
-        for j in range(4):
+        for j in range(5):
             while True:
-                num = int(input('Digite o número entre 0 e 1: '))
-                if i == j and num == 0:
-                    print('O número que você digitou está incorreto, tente novamente')
+                num = int(input(f'Digite o número entre 0 e 1 para a posição [{i+1}][{j+1}]: '))
+                if 0 > num or num > 1:
+                    print('O número que você digitou está incorreto, tente novamente') 
                 else:
-                    vetor.append(num)
-                    break
+                    if i == j:
+                        vetor.append(0)
+                        break
+                    else:
+                        vetor.append(num)
+                        break
         matriz.append(vetor)
     return matriz
+
 
 def mult_matriz(matriz):
     matrizResultante = []
@@ -41,6 +53,7 @@ def mult_matriz(matriz):
         matrizResultante.append(temp)
     return matrizResultante
 
+
 def show(matriz):
     for i in range(len(matriz)):
         for j in range(len(matriz[i])):
@@ -48,6 +61,18 @@ def show(matriz):
                 print(matriz[i][j], end=" ")
             else:
                 print(matriz[i][j])
+
+
+def findElementsRepeated(array):
+    find = False
+    trash = []
+    for z in array:
+        if z not in trash:
+            trash.append(z)
+        else:
+            return False
+    return True
+
 
 def pathCalc(matriz, b, e):
     oneWay = []
@@ -62,21 +87,11 @@ def pathCalc(matriz, b, e):
                 twoWay.append([b+1, i+1, e+1])
             for j in range(len(matriz[i])):
                 if matriz[i][j] == 1:
-                    if matriz[j][e] == 1 and b != j and i != e and j != e:
+                    if matriz[j][e] == 1 and findElementsRepeated([b, i, j, e]):
                         threeWay.append([b+1, i+1, j+1, e+1])
                     for k in range(len(matriz[j])):
                         if matriz[j][k] == 1 and matriz[k][e] == 1:
-                            find = False
-                            path = [b, i, j, k, e]
-                            trash = []
-                            for z in path:
-                                if z not in trash:
-                                    trash.append(z)
-                                else:
-                                    find = True
-                                    break
-                            if find == False:
+                            if findElementsRepeated([b, i, j, k, e]):
                                 fourWay.append([b+1, i+1, j+1, k+1, e+1])
     return [oneWay, twoWay, threeWay, fourWay]
 
-#b != j and i != e and j != e and j != b and k != e and k != b
