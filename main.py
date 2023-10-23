@@ -43,7 +43,6 @@ while True:
                 print(f"{t+1} Transmissões:")
                 if len(resul[t]) == 0:
                         print("Não há transmissões!")
-                        break
                 for i in range(len(resul[t])):
                     for j in range(len(resul[t][i])):
                         print(resul[t][i][j], end="")
